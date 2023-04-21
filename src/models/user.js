@@ -11,7 +11,7 @@ const addressSchema = {
         type: String
     },
     zipcode: {
-        type: Number
+        type: String
     },
     geo: {
         type: mongoose.Schema.Types.Mixed
@@ -44,7 +44,6 @@ const userSchema = mongoose.Schema({
     },
     phone: {
         type: String,
-        maxLength : 10
     },
     website: {
         type: String

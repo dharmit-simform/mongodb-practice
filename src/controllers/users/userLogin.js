@@ -13,7 +13,7 @@ export default async (req, res, next) => {
 
     try {
         const user = await userModel.findOne({ username: req.body.username });
-        if (user.length === 0) {
+        if (!user) {
             return res.status(400).send({
                 responseCode: 0,
                 responseMessage: 'Wrong Credentials',
@@ -44,9 +44,10 @@ export default async (req, res, next) => {
             }
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).send({
             responseCode: 0,
-            responseMessage: 'User Already Exists',
+            responseMessage: 'Internal Server Error',
             responseObject: error
         })
     }

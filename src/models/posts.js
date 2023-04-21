@@ -5,6 +5,9 @@ const postSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users"
     },
+    typeOfPost : {
+        type : String
+    },
     title: {
         type: String,
         minLength: 2,

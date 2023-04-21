@@ -1,27 +1,11 @@
-import mongoose from "mongoose";
-import commentsModel from "../../models/comments.js";
-import postsModel from "../../models/posts.js"
+import postModel from '../../models/posts.js';
 
 export default async (req, res, next) => {
-    if (!req.body.postId) {
-        return res.status(400).send({
-            responseCode: 0,
-            responseMessage: 'Provide Post ID',
-            responseObject: []
-        })
-    }
+    let totalPostCount = 0;
 
     try {
-        const post = await postsModel.findOne({ _id: req.body.postId });
-        if (!post) {
-            return res.status(400).send({
-                responseCode: 0,
-                responseMessage: 'No Posts exists with this ID',
-                responseObject: []
-            })
-        }
+        totalPostCount = await postModel.count({});
     } catch (error) {
-        console.log(error);
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server error',
@@ -29,21 +13,27 @@ export default async (req, res, next) => {
         })
     }
 
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+    const totalPages = Math.ceil(totalPostCount / limit);
+    let skip = (page - 1) * limit;
+
     try {
-        const comments = await commentsModel.aggregate([
+        const posts = await postModel.aggregate([
             {
                 $lookup: {
                     from: 'users',
                     localField: 'userId',
                     foreignField: '_id',
-                    as: 'userInfo'
+                    as: "userInfo"
                 }
             },
-            { $match: { postId: new mongoose.Types.ObjectId(req.body.postId) } },
+            { $skip: skip },
+            { $limit: limit },
             {
                 $project: {
                     "userId": 0,
-                    "postId" : 0,
+                    "postId": 0,
                     "userInfo.createdAt": 0,
                     "userInfo.updatedAt": 0,
                     "userInfo.address": 0,
@@ -59,10 +49,13 @@ export default async (req, res, next) => {
         return res.status(200).send({
             responseCode: 1,
             responseMessage: 'Success',
-            responseObject: { comments }
+            responseObject: {
+                totalPosts: totalPostCount,
+                totalPages: totalPages,
+                posts
+            }
         })
     } catch (error) {
-        console.log(error);
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server Error',

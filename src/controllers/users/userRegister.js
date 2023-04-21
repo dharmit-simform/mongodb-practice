@@ -2,6 +2,26 @@ import userModel from '../../models/user.js';
 import bcrypt from 'bcryptjs'
 
 export default async (req, res, next) => {
+
+    // To Insert Fake User Data into Database
+    // const fakeUsers = await fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json());
+
+    // const salt = await bcrypt.genSalt(10);
+    // const hashedPassword = await bcrypt.hash("test@123", salt);
+    // fakeUsers.forEach(user => {
+    //     user.phone = user.phone.split(' ')[0];
+    //     delete user.id;
+    //     delete user.company
+    //     user.password = hashedPassword
+    // });
+
+    // try {
+    //     const users = await userModel.insertMany(fakeUsers);
+    //     return res.status(200).json(users);
+    // } catch (error) {
+    //     console.log(error);
+    // }
+
     if (!req.body.username || !req.body.password) {
         return res.status(400).send({
             responseCode: 0,

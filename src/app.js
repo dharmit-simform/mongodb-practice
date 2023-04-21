@@ -26,7 +26,7 @@ try {
     console.log(error);
 }
 
-app.use('/users', router);
+app.use('/', router);
 
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
