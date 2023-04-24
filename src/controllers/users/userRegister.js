@@ -1,4 +1,4 @@
-import userModel from '../../models/user.js';
+import usersModel from '../../models/user.js';
 import bcrypt from 'bcryptjs'
 
 export default async (req, res, next) => {
@@ -16,7 +16,7 @@ export default async (req, res, next) => {
     // });
 
     // try {
-    //     const users = await userModel.insertMany(fakeUsers);
+    //     const users = await usersModel.insertMany(fakeUsers);
     //     return res.status(200).json(users);
     // } catch (error) {
     //     console.log(error);
@@ -31,7 +31,7 @@ export default async (req, res, next) => {
     }
 
     try {
-        const user = await userModel.find({ username: req.body.username, email: req.body.email });
+        const user = await usersModel.find({ username: req.body.username, email: req.body.email });
         if (user.length !== 0) {
             return res.status(400).send({
                 responseCode: 0,
@@ -50,7 +50,7 @@ export default async (req, res, next) => {
     try {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
-        const user = new userModel({
+        const user = new usersModel({
             name: req.body.name,
             email: req.body.email,
             username: req.body.username,

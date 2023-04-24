@@ -1,11 +1,11 @@
-import userModel from "../../models/user.js";
+import usersModel from "../../models/user.js";
 
 export default async (req, res, next) => {
 
     let totalUserCount = 0;
 
     try {
-        totalUserCount = await userModel.count({});
+        totalUserCount = await usersModel.count({});
     } catch (error) {
         return res.status(500).send({
             responseCode: 0,
@@ -19,7 +19,7 @@ export default async (req, res, next) => {
     let skip = (page - 1) * limit;
 
     try {
-        const users = await userModel.find({}, { _id: 1, name: 1, username: 1, email : 1, phone : 1 }, { limit: limit, skip: skip });
+        const users = await usersModel.find({}, { _id: 1, name: 1, username: 1, email : 1, phone : 1 }, { limit: limit, skip: skip });
         return res.status(200).send({
             responseCode: 1,
             responseMessage: 'Success',

@@ -1,5 +1,3 @@
-import userModel from "../../models/user.js"
-
 export default async (req, res, next) => {
     const userProfile = req.user;
     delete userProfile.password;

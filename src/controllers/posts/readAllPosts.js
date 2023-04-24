@@ -1,10 +1,10 @@
-import postModel from '../../models/posts.js';
+import postsModel from '../../models/posts.js';
 
 export default async (req, res, next) => {
     let totalPostCount = 0;
 
     try {
-        totalPostCount = await postModel.count({});
+        totalPostCount = await postsModel.count({});
     } catch (error) {
         return res.status(500).send({
             responseCode: 0,
@@ -17,9 +17,10 @@ export default async (req, res, next) => {
     let limit = parseInt(req.query.limit) || 10;
     const totalPages = Math.ceil(totalPostCount / limit);
     let skip = (page - 1) * limit;
+    let sortBy = req.query.sortBy || '_id';
 
     try {
-        const posts = await postModel.aggregate([
+        const posts = await postsModel.aggregate([
             {
                 $lookup: {
                     from: 'users',
@@ -28,12 +29,12 @@ export default async (req, res, next) => {
                     as: "userInfo"
                 }
             },
+            { $sort: { [sortBy]: 1 } },
             { $skip: skip },
             { $limit: limit },
             {
                 $project: {
                     "userId": 0,
-                    "postId": 0,
                     "userInfo.createdAt": 0,
                     "userInfo.updatedAt": 0,
                     "userInfo.address": 0,
@@ -56,6 +57,7 @@ export default async (req, res, next) => {
             }
         })
     } catch (error) {
+        console.log(error)
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server Error',

@@ -1,4 +1,4 @@
-import userModel from "../../models/user.js";
+import usersModel from "../../models/user.js";
 import bcrypt from 'bcryptjs';
 
 export default async (req, res, next) => {
@@ -17,7 +17,7 @@ export default async (req, res, next) => {
 
     try {
         if (updates.includes('username')) {
-            const user = await userModel.findOne({ username: updates.username });
+            const user = await usersModel.findOne({ username: updates.username });
             if (user) {
                 return res.status(400).send({
                     responseCode: 0,

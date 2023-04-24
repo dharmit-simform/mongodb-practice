@@ -1,4 +1,4 @@
-import commentModel from '../../models/comments.js';
+import commentsModel from '../../models/comments.js';
 import postModel from '../../models/posts.js';
 import userModel from '../../models/user.js';
 
@@ -39,7 +39,7 @@ export default async (req, res, next) => {
     }
 
     try {
-        const newComment = new commentModel({
+        const newComment = new commentsModel({
             postId: req.body.postId,
             userId: req.user._id,
             body: req.body.description

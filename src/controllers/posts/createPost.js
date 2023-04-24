@@ -1,4 +1,4 @@
-import postModel from '../../models/posts.js'
+import postsModel from '../../models/posts.js'
 import userModel from '../../models/user.js'
 
 function randomIntFromInterval(min, max) { // min and max included 
@@ -33,7 +33,7 @@ export default async (req, res, next) => {
 
 
     // try {
-    //     let insertedPosts = await postModel.insertMany(posts);
+    //     let insertedPosts = await postsModel.insertMany(posts);
     //     return res.status(201).send({
     //         responseCode: 1,
     //         responseMessage: 'Success',
@@ -56,7 +56,7 @@ export default async (req, res, next) => {
         })
     }
     try {
-        const post = new postModel({
+        const post = new postsModel({
             title: req.body.title,
             body: req.body.body,
             typeOfPost: req.body.typeOfPost,

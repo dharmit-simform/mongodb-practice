@@ -1,4 +1,4 @@
-import userModel from '../../models/user.js';
+import usersModel from '../../models/user.js';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 
@@ -12,7 +12,7 @@ export default async (req, res, next) => {
     }
 
     try {
-        const user = await userModel.findOne({ username: req.body.username });
+        const user = await usersModel.findOne({ username: req.body.username });
         if (!user) {
             return res.status(400).send({
                 responseCode: 0,
