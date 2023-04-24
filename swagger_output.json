@@ -7,12 +7,19 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http", "https"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter the token with the Bearer prefix"
+    }
+  },
   "paths": {
     "/users/login": {
       "post": {
+        "tags": ["User"],
         "description": "",
         "parameters": [
           {
@@ -46,6 +53,7 @@
     },
     "/users/register": {
       "post": {
+        "tags": ["User"],
         "description": "",
         "parameters": [
           {
@@ -94,6 +102,7 @@
     },
     "/users/all-users": {
       "get": {
+        "tags": ["User"],
         "description": "",
         "parameters": [
           {
@@ -119,6 +128,8 @@
     },
     "/users/profile": {
       "get": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["User"],
         "description": "",
         "parameters": [
           {
@@ -127,6 +138,7 @@
             "type": "string"
           }
         ],
+        "produces": ["application/json"],
         "responses": {
           "200": {
             "description": "OK"
@@ -139,6 +151,8 @@
     },
     "/users/edit-profile": {
       "put": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["User"],
         "description": "",
         "parameters": [
           {
@@ -160,8 +174,8 @@
           }
         ],
         "responses": {
-          "204": {
-            "description": "No Content"
+          "200": {
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
@@ -175,8 +189,44 @@
         }
       }
     },
+    "/users/search-user": {
+      "post": {
+        "tags": ["User"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "searchBy": {
+                  "example": "any"
+                },
+                "search": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/posts/create-post": {
       "post": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Post"],
         "description": "",
         "parameters": [
           {
@@ -221,13 +271,39 @@
     },
     "/posts/all-posts": {
       "get": {
+        "tags": ["Post"],
         "description": "",
-        "parameters": [],
-        "responses": {}
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
     },
     "/posts/delete-post": {
       "delete": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Post"],
         "description": "",
         "parameters": [
           {
@@ -266,6 +342,8 @@
     },
     "/posts/edit-post": {
       "put": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Post"],
         "description": "",
         "parameters": [
           {
@@ -290,8 +368,136 @@
         }
       }
     },
+    "/posts/like-post": {
+      "put": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Post"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "postId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/posts/filter-post/{filterType}": {
+      "get": {
+        "tags": ["Post"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "filterType",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/posts/my-posts": {
+      "get": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Post"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/posts/single-post/{postId}": {
+      "get": {
+        "tags": ["Post"],
+        "description": "",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/comments/comment": {
       "post": {
+        "security": [{ "Bearer": [] }],
+        "tags": ["Comment"],
         "description": "",
         "parameters": [
           {
@@ -333,6 +539,7 @@
     },
     "/comments/get-comments": {
       "post": {
+        "tags": ["Comment"],
         "description": "",
         "parameters": [
           {
@@ -366,6 +573,73 @@
           "500": {
             "description": "Internal Server Error"
           }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "suite": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "zipcode": {
+              "type": "string"
+            },
+            "geo": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "string"
+                },
+                "lng": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "phone": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        }
+      }
+    },
+    "Post": {
+      "type": "object",
+      "properties": {
+        "genre": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
         }
       }
     }
