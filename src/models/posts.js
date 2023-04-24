@@ -5,8 +5,8 @@ const postSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "users"
     },
-    typeOfPost : {
-        type : String
+    typeOfPost: {
+        type: String
     },
     title: {
         type: String,
@@ -16,6 +16,10 @@ const postSchema = mongoose.Schema({
     body: {
         type: String,
         minLength: 2
+    },
+    likes: {
+        type: mongoose.Schema.Types.Mixed,
+        default: []
     }
 }, { timestamps: true })
 
