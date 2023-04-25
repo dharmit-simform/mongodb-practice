@@ -10,13 +10,15 @@ export default async (req, res, next) => {
             responseCode: 1,
             responseMessage: 'Success',
             responseObject: { post }
-        })
+        });
 
     } catch (error) {
-        return res.status(200).send({
-            responseCode: 1,
-            responseMessage: 'Success',
-            responseObject: { post }
-        })
+        console.log(error);
+        return res.status(500).send({
+            responseCode: 0,
+            responseMessage: 'Internal Server Error',
+            responseObject: []
+        });
+
     }
 }

@@ -3,20 +3,24 @@ import postsModel from '../../models/posts.js';
 export default async (req, res, next) => {
     let totalPostCount = 0;
 
+    // Total number of posts
     try {
-        totalPostCount = await postsModel.count({});
+        totalPostCount = await postsModel.count({ is_active: 1 });
     } catch (error) {
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server error',
             responseObject: []
-        })
+        });
     }
 
+    // Pagination Parameters
     let page = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
     const totalPages = Math.ceil(totalPostCount / limit);
     let skip = (page - 1) * limit;
+
+    // Sorting Parameter
     let sortBy = req.query.sortBy || '_id';
 
     try {
@@ -29,6 +33,7 @@ export default async (req, res, next) => {
                     as: "userInfo"
                 }
             },
+            { $match: { is_active: 1 } },
             { $sort: { [sortBy]: 1 } },
             { $skip: skip },
             { $limit: limit },
@@ -55,13 +60,15 @@ export default async (req, res, next) => {
                 totalPages: totalPages,
                 posts
             }
-        })
+        });
+
     } catch (error) {
         console.log(error)
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server Error',
             responseObject: []
-        })
+        });
+
     }
 }

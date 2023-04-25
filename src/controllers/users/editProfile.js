@@ -2,6 +2,8 @@ import usersModel from "../../models/user.js";
 import bcrypt from 'bcryptjs';
 
 export default async (req, res, next) => {
+
+    // Check for Valid Updates
     const updates = Object.keys(req.body);
     const allowedUpdates = ['name', 'password', 'email', 'phone', 'website', 'address', 'username'];
 
@@ -13,8 +15,10 @@ export default async (req, res, next) => {
             responseMessage: 'Invalid Updates',
             responseObject: []
         });
+        
     }
 
+    // If username is edited, check if already exists
     try {
         if (updates.includes('username')) {
             const user = await usersModel.findOne({ username: updates.username });
@@ -23,23 +27,27 @@ export default async (req, res, next) => {
                     responseCode: 0,
                     responseMessage: 'Username already exits',
                     responseObject: []
-                })
+                });
             }
         }
+
     } catch (error) {
         console.log(error);
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server Error',
             responseObject: []
-        })
+        });
+
     }
 
     try {
         let user = req.user;
+
+        // Encrypt the Password if Password id changed
         if (updates.includes('password')) {
             const salt = await bcrypt.genSalt(10);
-            req.body.password = await bcrypt.hash(req.body.password, salt)
+            req.body.password = await bcrypt.hash(req.body.password, salt);
         }
 
         updates.forEach(update => user[update] = req.body[update]);
@@ -50,13 +58,14 @@ export default async (req, res, next) => {
             responseCode: 1,
             responseMessage: 'Updated Successfully',
             responseObject: []
-        })
+        });
+
     } catch (error) {
         console.log(error);
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server Error',
             responseObject: error
-        })
+        });
     }
 }

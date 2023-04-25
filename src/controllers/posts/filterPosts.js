@@ -1,20 +1,33 @@
 import postsModel from '../../models/posts.js';
 
 export default async (req, res, next) => {
+
+    // Check for Proper Paramters Passed
     if (!req.params.filterType) {
         return res.status(400).send({
             responseCode: 0,
             responseMessage: 'Provide a Filter Type',
             responseObject: []
         });
-    };
+    }
 
-    const filterType = req.params.filterType
+    const filterType = req.params.filterType;
 
     if (filterType === 'likes') {
+
         let mostLikedPost;
+        // Get the Most Liked Post Likes Count
         try {
-            mostLikedPost = await postsModel.aggregate([{ $project: { _id: 0, likes_count: { $size: "$likes" } } }, { $sort: { likes_count: -1 } }, { $limit: 1 }]);
+            mostLikedPost = await postsModel.aggregate([
+                {
+                    $project: {
+                        _id: 0,
+                        likes_count: { $size: "$likes" }
+                    }
+                },
+                { $sort: { likes_count: -1 } },
+                { $limit: 1 }
+            ]);
         } catch (error) {
             console.log(error);
         }
@@ -25,16 +38,10 @@ export default async (req, res, next) => {
         try {
             const posts = await postsModel.aggregate([
                 {
-                    $addFields: {
-                        likes_count: {
-                            $size: "$likes"
-                        }
-                    }
+                    $addFields: { likes_count: { $size: "$likes" } }
                 },
                 {
-                    $match: {
-                        likes_count: { $gte: start, $lte: end }
-                    }
+                    $match: { likes_count: { $gte: start, $lte: end } }
                 }
             ]);
 
@@ -42,15 +49,18 @@ export default async (req, res, next) => {
                 responseCode: 1,
                 responseMessage: 'Success',
                 responseObject: { posts }
-            })
+            });
+
         } catch (error) {
             console.log(error);
             return res.status(500).send({
                 responseCode: 0,
                 responseMessage: 'Internal Server Error',
                 responseObject: []
-            })
+            });
+
         }
+
     } else if (filterType === "date") {
         let startDate = req.query.startDate || new Date();
         let endDate = req.query.endDate || new Date();
@@ -67,20 +77,24 @@ export default async (req, res, next) => {
                 responseCode: 1,
                 responseMessage: 'Success',
                 responseObject: { posts }
-            })
+            });
+
         } catch (error) {
             console.log(error);
             res.status(500).send({
                 responseCode: 0,
                 responseMessage: 'Internal Server Error',
                 responseObject: []
-            })
+            });
+
         }
+
     } else {
         res.status(400).send({
             responseCode: 0,
             responseMessage: 'Wrong Filter',
             responseObject: []
-        })
+        });
+        
     }
 }

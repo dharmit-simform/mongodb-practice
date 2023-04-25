@@ -29,13 +29,13 @@ export default async (req, res, next) => {
     //     return res.status(500);
     // }
 
-
+    // Check for Proper Input Parameters
     if (!req.body.postId || !req.body.description) {
         return res.status(400).send({
             responseCode: 0,
             responseMessage: 'Proper Parameters Required',
             responseObject: []
-        })
+        });
     }
 
     try {
@@ -51,13 +51,14 @@ export default async (req, res, next) => {
             responseCode: 1,
             responseMessage: 'Success',
             responseObject: newComment
-        })
+        });
+        
     } catch (error) {
         console.log(error);
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server Error',
             responseObject: []
-        })
+        });
     }
 }

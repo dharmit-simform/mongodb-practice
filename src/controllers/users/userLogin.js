@@ -3,16 +3,20 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 
 export default async (req, res, next) => {
+
+    // Check for Proper Parameters Passed
     if (!req.body.username || !req.body.password) {
         return res.status(400).send({
             responseCode: 0,
             responseMessage: 'Please provide username and password',
             responseObject: []
-        })
+        });
+
     }
 
     try {
         const user = await usersModel.findOne({ username: req.body.username });
+
         if (!user) {
             return res.status(400).send({
                 responseCode: 0,
@@ -20,7 +24,7 @@ export default async (req, res, next) => {
                 responseObject: []
             });
         }
-    
+
         const isValidPassword = await bcrypt.compare(req.body.password, user.password);
         if (!isValidPassword) {
             return res.status(400).send({
@@ -29,9 +33,9 @@ export default async (req, res, next) => {
                 responseObject: []
             });
         }
-    
+
         const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET);
-    
+
         return res.status(200).send({
             responseCode: 1,
             responseMessage: "Success",
@@ -42,13 +46,15 @@ export default async (req, res, next) => {
                 },
                 token
             }
-        })
+        });
+
     } catch (error) {
         console.log(error)
         return res.status(500).send({
             responseCode: 0,
             responseMessage: 'Internal Server Error',
             responseObject: error
-        })
+        });
+
     }
 }

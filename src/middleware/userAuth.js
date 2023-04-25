@@ -2,6 +2,7 @@ import userModel from '../models/user.js';
 import jwt from 'jsonwebtoken';
 
 export default async (req, res, next) => {
+
     try {
         const token = req.header('Authorization').replace('Bearer ', '');
         if (!token) {
@@ -26,7 +27,9 @@ export default async (req, res, next) => {
 
         req.user = user;
         next();
+
     } catch (error) {
+        console.log(error);
         return res.status(403).send({
             responseCode: 0,
             responseMessage: 'User Not Authenticated',

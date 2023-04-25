@@ -1,4 +1,5 @@
 export default async (req, res, next) => {
+    
     const userProfile = req.user;
     delete userProfile.password;
 
@@ -6,5 +7,5 @@ export default async (req, res, next) => {
         responseCode: 1,
         responseMessage: 'Success',
         responseObject: { profile: userProfile }
-    })
+    });
 }
