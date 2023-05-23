@@ -9,13 +9,13 @@
 1. Clone the Git Repository in your system using the following command
 
     ```bash
-    $ git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
+    git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
     ```
 
 2. Open the Folder using the Following command
 
     ```bash
-    $ cd PROJECT_TITLE
+    cd PROJECT_TITLE
     ```
 
 3. Run the following command to install the required packages based on the package manager you are using
@@ -42,4 +42,4 @@
     ```
 
 2. API Url : `http://localhost:3000`\
-   API Documentation : `http://localhost:3000/doc`
+   API Documentation : `http://localhost:3000/doc`# mongodb-assignment
