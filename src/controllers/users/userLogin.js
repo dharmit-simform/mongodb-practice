@@ -1,6 +1,6 @@
 import usersModel from '../../models/user.js';
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken';
+import { generateJwt } from './user.services.js';
 
 export default async (req, res, next) => {
 
@@ -34,7 +34,7 @@ export default async (req, res, next) => {
             });
         }
 
-        const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET);
+        const token = await generateJwt({ userId: user._id });
 
         return res.status(200).send({
             responseCode: 1,

@@ -3,25 +3,6 @@ import bcrypt from 'bcryptjs'
 
 export default async (req, res, next) => {
 
-    // To Insert Fake User Data into Database
-    // const fakeUsers = await fetch("https://jsonplaceholder.typicode.com/users").then(response => response.json());
-
-    // const salt = await bcrypt.genSalt(10);
-    // const hashedPassword = await bcrypt.hash("test@123", salt);
-    // fakeUsers.forEach(user => {
-    //     user.phone = user.phone.split(' ')[0];
-    //     delete user.id;
-    //     delete user.company
-    //     user.password = hashedPassword
-    // });
-
-    // try {
-    //     const users = await usersModel.insertMany(fakeUsers);
-    //     return res.status(200).json(users);
-    // } catch (error) {
-    //     console.log(error);
-    // }
-
     // Check for Proper Parameters
     if (!req.body.username || !req.body.password) {
         return res.status(400).send({
@@ -68,17 +49,25 @@ export default async (req, res, next) => {
 
         await user.save();
 
+        const token = await generateJwt({ userId: user._id });
+
         return res.status(201).send({
             responseCode: 1,
             responseMessage: 'User Created Successfully',
-            responseObject: user
+            responseObject: {
+                user: {
+                    name: user.name,
+                    email: user.email
+                },
+                token
+            }
         });
 
     } catch (error) {
         console.log(error);
         return res.status(500).send({
             responseCode: 0,
-            responseMessage: 'User Already Exists',
+            responseMessage: 'Internal Server Error',
             responseObject: error
         });
     }

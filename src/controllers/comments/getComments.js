@@ -5,7 +5,7 @@ import postsModel from "../../models/posts.js"
 export default async (req, res, next) => {
 
     // Check for Parameters
-    if (!req.body.postId) {
+    if (!req.params.postId) {
         return res.status(400).send({
             responseCode: 0,
             responseMessage: 'Provide Post ID',
@@ -15,7 +15,7 @@ export default async (req, res, next) => {
 
     // Check if the Post exists
     try {
-        const post = await postsModel.findOne({ _id: req.body.postId });
+        const post = await postsModel.findOne({ _id: new mongoose.Types.ObjectId(req.params.postId) });
         if (!post) {
             return res.status(400).send({
                 responseCode: 0,
@@ -43,7 +43,7 @@ export default async (req, res, next) => {
                     as: 'userInfo'
                 }
             },
-            { $match: { postId: new mongoose.Types.ObjectId(req.body.postId) } },
+            { $match: { postId: new mongoose.Types.ObjectId(req.params.postId) } },
             {
                 $project: {
                     "userId": 0,

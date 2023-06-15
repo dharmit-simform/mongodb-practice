@@ -13,7 +13,7 @@ export default async (req, res, next) => {
 
     // Check for Allowed Updates
     const updates = Object.keys(req.body);
-    const allowedUpdates = ['title', 'body'];
+    const allowedUpdates = ['title', 'body', 'typeOfPost'];
 
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
 

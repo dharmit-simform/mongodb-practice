@@ -9,7 +9,7 @@ router.post('/comment', auth, async (req, res, next) => {
     await createComment(req, res, next);
 });
 
-router.post('/get-comments', auth, async (req, res, next) => {
+router.get('/get-comments/:postId', async (req, res, next) => {
     await getComments(req, res, next);
 });
 

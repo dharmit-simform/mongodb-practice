@@ -25,28 +25,30 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Login"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Login Response",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseLogin"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -59,49 +61,37 @@
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "username": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                },
-                "email": {
-                  "example": "any"
-                },
-                "name": {
-                  "example": "any"
-                },
-                "address": {
-                  "example": "any"
-                },
-                "contact": {
-                  "example": "any"
-                },
-                "website": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/RegisterUser"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseLogin"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
     },
     "/users/all-users": {
       "get": {
+        "security": [{ "Bearer": [] }],
         "tags": ["User"],
         "description": "",
         "parameters": [
@@ -118,10 +108,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseAllUsers"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -131,20 +127,19 @@
         "security": [{ "Bearer": [] }],
         "tags": ["User"],
         "description": "",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
         "produces": ["application/json"],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User Profile",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseUserProfile"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -156,41 +151,44 @@
         "description": "",
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/RegisterUser"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
     },
     "/users/search-user": {
       "post": {
+        "security": [{ "Bearer": [] }],
         "tags": ["User"],
         "description": "",
         "parameters": [
@@ -212,13 +210,22 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseAllUsers"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -230,41 +237,38 @@
         "description": "",
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "example": "any"
-                },
-                "body": {
-                  "example": "any"
-                },
-                "typeOfPost": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Post"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseCreatePost"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -292,10 +296,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseAllPosts"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -326,16 +336,28 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "No Content",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -347,23 +369,38 @@
         "description": "",
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
           }
+          
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -375,18 +412,14 @@
         "description": "",
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "postId": {
-                  "example": "any"
+                  "type": "string"
                 }
               }
             }
@@ -394,13 +427,22 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseLikePost"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -501,21 +543,17 @@
         "description": "",
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "postId": {
-                  "example": "any"
+                  "type": "string"
                 },
                 "description": {
-                  "example": "any"
+                  "type": "string"
                 }
               }
             }
@@ -537,27 +575,16 @@
         }
       }
     },
-    "/comments/get-comments": {
-      "post": {
+    "/comments/get-comments/{postId}": {
+      "get": {
         "tags": ["Comment"],
         "description": "",
         "parameters": [
           {
-            "name": "Authorization",
-            "in": "header",
+            "name": "postId",
+            "in": "path",
+            "required": true,
             "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "postId": {
-                  "example": "any"
-                }
-              }
-            }
           }
         ],
         "responses": {
@@ -567,9 +594,6 @@
           "400": {
             "description": "Bad Request"
           },
-          "403": {
-            "description": "Forbidden"
-          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -578,7 +602,137 @@
     }
   },
   "definitions": {
-    "User": {
+    "GenericResponse": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "object"
+        }
+      }
+    },
+    "GenericResponseLogin": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "object",
+          "properties": {
+            "user": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              }
+            },
+            "token": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "GenericResponseCreatePost": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string"
+            },
+            "genre": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "body": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "GenericResponseAllPosts": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              },
+              "genre": {
+                "type": "string"
+              },
+              "is_active": {
+                "type": "boolean"
+              },
+              "likes": {
+                "type": "array",
+                "items": {
+                  "description": "User Id",
+                  "type": "string"
+                }
+              },
+              "userInfo": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "RegisterUser": {
       "type": "object",
       "properties": {
         "name": {
@@ -629,6 +783,118 @@
         }
       }
     },
+    "GenericResponseUserProfile": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "object",
+          "properties": {
+            "profile": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "object",
+                  "properties": {
+                    "street": {
+                      "type": "string"
+                    },
+                    "suite": {
+                      "type": "string"
+                    },
+                    "city": {
+                      "type": "string"
+                    },
+                    "zipcode": {
+                      "type": "string"
+                    },
+                    "geo": {
+                      "type": "object",
+                      "properties": {
+                        "lat": {
+                          "type": "string"
+                        },
+                        "lng": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "website": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "GenericResponseAllUsers": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "object",
+          "properties": {
+            "totalUsers": {
+              "type": "number"
+            },
+            "totalPages": {
+              "type": "number"
+            },
+            "user": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Post": {
       "type": "object",
       "properties": {
@@ -640,6 +906,52 @@
         },
         "body": {
           "type": "string"
+        }
+      }
+    },
+    "UserSearch": {
+      "type": "object",
+      "properties": {
+        "searchBy": {
+          "type": "string",
+          "enum": ["name", "username", "email", "phone", "website"]
+        },
+        "search": {
+          "type": "string"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "GenericResponseLikePost": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "object",
+          "properties": {
+            "likesCount": {
+              "type": "array",
+              "items": {
+                "description": "User Ids of Users who liked",
+                "type": "string"
+              }
+            }            
+          }
         }
       }
     }

@@ -7,30 +7,9 @@ function randomIntFromInterval(min, max) { // min and max included
 }
 
 export default async (req, res, next) => {
-
-    // Insert Fake Comments data
-    // const comments = await fetch("https://jsonplaceholder.typicode.com/comments").then(response => response.json());
-    // const users = await userModel.find({}, { _id: 1 });
-    // const posts = await postModel.find({}, { _id: 1 });
-
-    // comments.forEach(comment => {
-    //     delete comments.id;
-    //     delete comment.name;
-    //     delete comment.email;
-    //     comment.userId = users[randomIntFromInterval(0, 9)]._id;
-    //     comment.postId = posts[randomIntFromInterval(0, 99)]._id;
-    // })
-
-    // try {
-    //     const insertedComments = await commentModel.insertMany(comments)
-    //     return res.send(insertedComments)
-    // } catch (error) {
-    //     console.log(error);
-    //     return res.status(500);
-    // }
-
+    
     // Check for Proper Input Parameters
-    if (!req.body.postId || !req.body.description) {
+    if (!req.body.postId || !req.body.comment) {
         return res.status(400).send({
             responseCode: 0,
             responseMessage: 'Proper Parameters Required',
@@ -42,7 +21,7 @@ export default async (req, res, next) => {
         const newComment = new commentsModel({
             postId: req.body.postId,
             userId: req.user._id,
-            body: req.body.description
+            body: req.body.comment
         });
 
         await newComment.save();

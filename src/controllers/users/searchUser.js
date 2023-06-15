@@ -33,7 +33,18 @@ export default async (req, res, next) => {
         return res.status(200).send({
             responseCode: 1,
             responseMessage: 'Success',
-            responseObject: { user }
+            responseObject: {
+                user: [
+                    {
+                        _id: user._id,
+                        name: user.name,
+                        username: user.username,
+                        email: user.email,
+                        phone: user.phone,
+                        website: user.website
+                    }
+                ]
+            }
         });
 
     } catch (error) {
