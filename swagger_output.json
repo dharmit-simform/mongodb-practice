@@ -375,7 +375,6 @@
               "$ref": "#/definitions/Post"
             }
           }
-          
         ],
         "responses": {
           "200": {
@@ -456,7 +455,8 @@
             "name": "filterType",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "enum": ["likes", "date"]
           },
           {
             "name": "start",
@@ -481,13 +481,22 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseAllPosts"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -497,22 +506,24 @@
         "security": [{ "Bearer": [] }],
         "tags": ["Post"],
         "description": "",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseAllPosts"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -531,7 +542,22 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseAllPosts"
+            }
+          },
+          "400": {
+            "description": "Not Found",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -561,16 +587,28 @@
         ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Forbidden",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -589,13 +627,22 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GenericResponseGetComments"
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Bad Request",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Internal Server Error",
+            "schema": {
+              "$ref": "#/definitions/GenericResponse"
+            }
           }
         }
       }
@@ -702,9 +749,6 @@
               },
               "genre": {
                 "type": "string"
-              },
-              "is_active": {
-                "type": "boolean"
               },
               "likes": {
                 "type": "array",
@@ -950,7 +994,51 @@
                 "description": "User Ids of Users who liked",
                 "type": "string"
               }
-            }            
+            }
+          }
+        }
+      }
+    },
+    "GenericResponseGetComments": {
+      "type": "object",
+      "properties": {
+        "responseCode": {
+          "type": "integer"
+        },
+        "responseMessage": {
+          "type": "string"
+        },
+        "responseObject": {
+          "type": "object",
+          "properties": {
+            "comments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "userInfo": {
+                    "type": "array",
+                    "items": {
+                      "type":"object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

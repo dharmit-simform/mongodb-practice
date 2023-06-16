@@ -42,6 +42,14 @@ export default async (req, res, next) => {
                 },
                 {
                     $match: { likes_count: { $gte: start, $lte: end } }
+                },
+                {
+                    $project: {
+                        "__v": 0,
+                        "createdAt": 0,
+                        "updatedAt": 0,
+                        "is_active": 0
+                    }
                 }
             ]);
 
@@ -70,8 +78,9 @@ export default async (req, res, next) => {
                 createdAt: {
                     $gte: new Date(new Date(startDate).setHours(0, 0, 0)),
                     $lt: new Date(new Date(endDate).setHours(23, 59, 59))
-                }
-            });
+                },
+                is_active: 1
+            }).select(["-__v", "-createdAt", "-updatedAt", "-is_active"]);
 
             res.status(200).send({
                 responseCode: 1,

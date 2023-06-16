@@ -31,8 +31,20 @@ try {
 
 app.use('/', router);
 
-// API Documentation
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+if (process.env.NODE_ENV == 'development') {
+    // API Documentation
+    app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+}
+
+app.all("*", (req, res, next) => {
+    const err = new Error(`Can't find ${req.originalUrl} on the server`);
+    err.status = "fail";
+    err.statusCode = 404;
+
+    next(err);
+})
+
+
 
 app.listen(PORT, () => {
     console.log(`App Listening on http://localhost:${PORT}`);

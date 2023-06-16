@@ -56,6 +56,12 @@ export default async (req, res, next) => {
                     "userInfo.phone": 0,
                     "userInfo.website": 0,
                     "userInfo.email": 0,
+                    "userInfo._id": 0,
+                    "userInfo.is_active": 0,
+                    "__v": 0,
+                    "createdAt": 0,
+                    "updatedAt": 0,
+                    "is_active": 0,
                 }
             }
         ]);

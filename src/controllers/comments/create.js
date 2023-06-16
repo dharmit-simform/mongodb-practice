@@ -29,7 +29,7 @@ export default async (req, res, next) => {
         return res.status(201).send({
             responseCode: 1,
             responseMessage: 'Success',
-            responseObject: newComment
+            responseObject: []
         });
         
     } catch (error) {
