@@ -42,4 +42,4 @@
     ```
 
 2. API Url : `http://localhost:3000`\
-   API Documentation : `http://localhost:3000/doc`# mongodb-assignment
+   API Documentation : `http://localhost:3000/docs`# mongodb-assignment
